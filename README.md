@@ -207,3 +207,13 @@ Stores individual line items in each journal entry, including account name, debi
 
 - Users to JournalEntries: One-to-Many
 - JournalEntries to JournalEntryLines: One-to-Many
+
+**Video Link **
+
+- Part-1
+
+https://youtu.be/6FWc94uH8x0
+
+- Part-2
+
+https://youtu.be/VfALiaboQcQ
