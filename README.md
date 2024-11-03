@@ -31,8 +31,8 @@ The Financial Management System employs **Onion Architecture** (or **Clean Archi
 - **Infrastructure Layer:** Deals with data access, external services, and implementations of repositories.
 - **Presentation Layer:** Contains the UI components/API, including controllers and views (Razor views).
 
+```markdown
 FinancialManagementSystem
-
 │
 ├── Core
 │   ├── Entities
@@ -49,15 +49,15 @@ FinancialManagementSystem
 │
 ├── Presentation
     │── API
-	│   ├── Controllers
-	│   ├── Models
-	│── UI
-	│   ├── Controllers
-	│   ├── Views
-	    ├── Scripts
-		├── Validator
-		├── Mapper
-
+    │    ├── Controllers
+    │    ├── Models
+    │── UI
+         ├── Controllers
+         ├── Views
+         ├── Scripts
+         ├── Validator
+         ├── Mapper
+```
 ### How Different Layers Interact
 
 1. The **Presentation Layer** communicates with the **Application Layer** to send commands or queries.
@@ -125,6 +125,11 @@ Base URL : http://localhost:55312/api/v1/
 - GET /JournalEntry/Details/{id} - Retrieves details of a specific journal entry.
 - GET /JournalEntry/GetReportData{queryString} - Retrieves details of report journal entry.
 
+## Login Credentials
+
+| User Name | Password |
+| -------- | -------- | 
+| admin  | 123  | 
 
 **Request and Response Formats**
 
