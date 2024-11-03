@@ -208,7 +208,7 @@ Stores individual line items in each journal entry, including account name, debi
 - Users to JournalEntries: One-to-Many
 - JournalEntries to JournalEntryLines: One-to-Many
 
-**Video Link **
+**Video Link**
 
 - Part-1
 
