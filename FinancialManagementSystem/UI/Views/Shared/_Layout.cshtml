@@ -1,0 +1,84 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Financial Management System</title>
+    @Styles.Render("~/Content/css")
+    @RenderSection("Styles", required: false)
+    @Scripts.Render("~/bundles/modernizr")
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    @*<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">*@
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    @{
+        // Assume that "nav" is a boolean session variable
+        bool isNavEnabled = Session["nav"] != null && (bool)Session["nav"];
+    }
+
+</head>
+<body>
+    <div class="d-flex">
+        <!-- Sidebar -->
+        @if (isNavEnabled) 
+        {
+            <nav class="navbar navbar-expand-lg navbar-dark bg-dark flex-column p-3" style="width: 250px;">
+                <a class="navbar-brand" href="#">FMS</a>
+                <div class="navbar-nav flex-column">
+                    <a class="nav-link" href="@Url.Action("Index", "Home")">Home</a>
+
+                    <div class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="coaDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            About
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="coaDropdown">
+                            <li><a class="dropdown-item" href="@Url.Action("About", "Home")">About</a></li>
+                            <li><a class="dropdown-item" href="@Url.Action("Contact", "Home")">Contact</a></li>                           
+                        </ul>
+                    </div>
+
+                    <div class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="coaDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Chart Of Accounts
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="coaDropdown">
+                            <li><a class="dropdown-item" href="@Url.Action("Index", "ChartOfAccounts")">View COA</a></li>
+                            <li><a class="dropdown-item" href="@Url.Action("Create", "ChartOfAccounts")">Add COA</a></li>
+                            <li><a class="dropdown-item" href="@Url.Action("Reports", "ChartOfAccounts")">COA Reports</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="journalDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Journal
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="journalDropdown">
+                            <li><a class="dropdown-item" href="@Url.Action("Index", "JournalEntry")">Journal Entry</a></li>
+                            <li><a class="dropdown-item" href="@Url.Action("Create", "JournalEntry")">Journal Create</a></li>
+                            <li><a class="dropdown-item" href="@Url.Action("Reports", "JournalEntry")">Journal Reports</a></li>
+                        </ul>
+                    </div>
+
+                    <a class="nav-link" href="@Url.Action("Logout", "Account")">Logout</a>
+
+                    @*<a class="nav-link" href="@Url.Action("Login", "Account")">Login</a>*@
+
+                </div>
+            </nav>
+        }
+        <!-- Main content -->
+        <div class="container body-content">
+            @RenderBody()
+            <hr />
+            <footer>
+                <p>&copy; @DateTime.Now.Year - Developed By Md. Golam Mostafa</p>
+            </footer>
+        </div>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+@*<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>*@
+<script src="~/Scripts/bootstrap.bundle.min.js"></script>
+</body>
+</html>

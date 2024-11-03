@@ -1,0 +1,122 @@
+﻿@{
+    ViewBag.Title = "Chart of Accounts Report";
+}
+
+<h2>Chart of Accounts Report</h2>
+
+<!-- Filters Section -->
+<div class="filter-container mb-3">
+    <label>Date Range: </label>
+    <input type="text" id="startDate" placeholder="Start Date" />
+    <input type="text" id="endDate" placeholder="End Date" />
+
+    <label>Account Type: </label>
+    <select id="accountType">
+        <option value="">All</option>
+        <option value="Asset">Asset</option>
+        <option value="Liability">Liability</option>
+        <option value="Equity">Equity</option>
+        <option value="Revenue">Revenue</option>
+        <option value="Expense">Expense</option>
+        <option value="Liability">Liability</option>
+    </select>
+    <button id="filterButton">Apply Filters</button>
+</div>
+
+<!-- DataTable -->
+<table id="reportTable" class="display" style="width:100%">
+    <thead>
+        <tr>
+            <th>Account ID</th>
+            <th>Account Name</th>
+            <th>Account Type</th>
+            <th>Is Active</th>
+            <th>Created Date</th>
+        </tr>
+    </thead>
+</table>
+
+
+@section Scripts {
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.7.1/css/buttons.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.7.1/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.7.1/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.7.1/js/buttons.print.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+    <script>
+        $(document).ready(function () {
+            flatpickr("#startDate", {
+                dateFormat: "Y-m-d", // Format to YYYY-MM-DD
+            });
+            flatpickr("#endDate", {
+                dateFormat: "Y-m-d", // Format to YYYY-MM-DD
+            });
+
+    var table = $('#reportTable').DataTable({
+        ajax: {
+            url: '@Url.Action("GetReportData", "ChartOfAccounts")',
+            dataSrc: 'data',
+            data: function (d) {
+                d.startDate = $('#startDate').val();
+                d.endDate = $('#endDate').val();
+                d.accountType = $('#accountType').val();
+            }
+        },
+        columns: [
+            { data: 'Id' },
+            { data: 'AccountName' },
+            { data: 'AccountType' },
+            { data: 'IsActive' },
+            {
+                data: 'CreatedDate',
+                render: function (data, type, row) {
+                    if (data) {
+                        var date = new Date(data);
+                        return date.toISOString().slice(0, 10);
+                    }
+                    return '';
+                }
+            }
+        ],
+        dom: 'Bfrtip',
+        buttons: [
+            {
+                extend: 'copy',
+                title: 'Chart of Accounts Report' 
+            },
+            {
+                extend: 'csv',
+                title: 'Chart of Accounts Report' 
+            },
+            {
+                extend: 'excel',
+                title: 'Chart of Accounts Report' 
+            },
+            {
+                extend: 'pdf',
+                title: 'Chart of Accounts Report',
+                orientation: 'portrait', 
+                pageSize: 'A4' 
+            },
+            {
+                extend: 'print',
+                title: 'Chart of Accounts Report' 
+            }
+        ]
+    });
+
+    $('#filterButton').on('click', function () {
+        table.ajax.reload();
+    });
+});
+
+    </script>
+}

@@ -1,0 +1,50 @@
+﻿@model Core.Entities.ChartOfAccount
+
+@{
+    ViewBag.Title = "Edit Account";
+}
+
+<div class="container mt-5">
+    <div class="card shadow-lg">
+        <div class="card-header bg-primary text-white">
+            <h2 class="mb-0">Edit Account</h2>
+        </div>
+
+        <div class="card-body">
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                <div class="form-group mb-3">
+                    @Html.LabelFor(m => m.AccountName, new { @class = "form-label" })
+                    @Html.TextBoxFor(m => m.AccountName, new { @class = "form-control", placeholder = "Enter Account Name" })
+                    @Html.ValidationMessageFor(m => m.AccountName, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group mb-3">
+                    @Html.LabelFor(m => m.AccountType, new { @class = "form-label" })
+                    @Html.TextBoxFor(m => m.AccountType, new { @class = "form-control", placeholder = "Enter Account Type" })
+                    @Html.ValidationMessageFor(m => m.AccountType, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group mb-3">
+                    @Html.CheckBoxFor(m => m.IsActive, new { @class = "form-check-input" })
+                    @Html.ValidationMessageFor(m => m.IsActive, "", new { @class = "text-danger" })
+                    <label class="form-check-label" for="IsActive">@Html.DisplayNameFor(m => m.IsActive)</label>
+                </div>
+
+                <div class="text-end mt-3">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                    @Html.ActionLink("Cancel", "Index", null, new { @class = "btn btn-outline-secondary" })
+                </div>
+            }
+        </div>
+
+        <div class="card-footer text-end">
+            <a href="@Url.Action("Index", "ChartOfAccounts")" class="btn btn-outline-primary">
+                <i class="bi bi-arrow-left"></i> Back to List
+            </a>
+        </div>
+    </div>
+</div>

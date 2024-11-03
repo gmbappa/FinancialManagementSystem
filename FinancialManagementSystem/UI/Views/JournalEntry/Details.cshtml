@@ -1,0 +1,67 @@
+﻿@model UI.Models.JournalEntryDto
+
+@{
+    ViewBag.Title = "Journal Entry Details";
+}
+
+<div class="container mt-5">
+    <div class="card shadow-lg">
+        <div class="card-header bg-primary text-white">
+            <h2 class="mb-0">Journal Entry Details</h2>
+        </div>
+
+        <div class="card-body">
+            <div class="row mb-4">
+                <div class="col-md-4">
+                    <label class="form-label"><strong>Entry Date:</strong></label>
+                    <p class="border rounded p-2">@Model.EntryDate.ToString("yyyy-MM-dd")</p>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label"><strong>Description:</strong></label>
+                    <p class="border rounded p-2">@Model.Description</p>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label"><strong>Reference:</strong></label>
+                    <p class="border rounded p-2">
+                        @(!string.IsNullOrWhiteSpace(Model.Reference) ? Model.Reference : "N/A")
+                    </p>
+                </div>
+
+            </div>
+
+            <h3 class="text-primary">Journal Entry Lines</h3>
+
+            <div class="table-responsive">
+                <table class="table table-hover table-bordered mt-3">
+                    <thead class="table-light">
+                        <tr>
+                            <th scope="col">Account Name</th>
+                            <th scope="col">Amount</th>
+                            <th scope="col">Debit/Credit</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var line in Model.Lines)
+                        {
+                            <tr>
+                                <td>@line.AccountName</td>
+                                <td>@line.Amount.ToString("C")</td>
+                                <td>
+                                    <span class="badge @(line.IsDebit ? "bg-success" : "bg-danger")">
+                                        @(line.IsDebit ? "Debit" : "Credit")
+                                    </span>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="card-footer text-end">
+            <a href="@Url.Action("Index", "JournalEntry")" class="btn btn-outline-primary">
+                <i class="bi bi-arrow-left"></i> Back to List
+            </a>
+        </div>
+    </div>
+</div>

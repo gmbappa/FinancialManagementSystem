@@ -1,0 +1,114 @@
+﻿@model IEnumerable<Core.Entities.ChartOfAccount>
+
+@{
+    ViewBag.Title = "Chart of Accounts";
+}
+
+<a href="@Url.Action("Create", "ChartOfAccounts")" class="btn btn-success btn-sm mb-3">
+    <i class="fa fa-plus"></i> Add
+</a>
+
+
+<h2>Chart of Accounts</h2>
+
+@if (!Model.Any())
+{
+    <p>No accounts available.</p>
+}
+else
+{
+    <table id="chartOfAccountsTable" class="display">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Account Name</th>
+                <th>Account Type</th>
+                <th>IsActive</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var account in Model)
+            {
+                <tr>
+                    <td>@account.Id</td>
+                    <td>@account.AccountName</td>
+                    <td>@account.AccountType</td>
+                    <td>@account.IsActive</td>
+                    <td>
+                        <a href="@Url.Action("Edit", "ChartOfAccounts", new { id = account.Id })" class="btn btn-primary btn-sm">
+                            <i class="fa fa-edit"></i> Edit
+                        </a> |
+                        <a href="@Url.Action("Details", "ChartOfAccounts", new { id = account.Id })" class="btn btn-info btn-sm">
+                            <i class="fa fa-info-circle"></i> Details
+                        </a> |
+                        <button type="button" class="btn btn-danger btn-sm btn-delete" data-entry-id="@account.Id" data-bs-toggle="tooltip" title="Delete Entry">
+                            <i class="fa fa-trash"></i> Delete
+                        </button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+
+    <!-- Delete Confirmation Modal -->
+    <div class="modal fade" id="deleteConfirmationModal" tabindex="-1" aria-labelledby="deleteConfirmationModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title" id="deleteConfirmationModalLabel">Confirm Delete</h5>
+                    <button type="button" class="btn-close text-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to delete this entry?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" id="confirmDeleteBtn" class="btn btn-danger">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@section Styles {
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css" />
+}
+@section Scripts {
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#chartOfAccountsTable').DataTable({
+                "paging": true,
+                "searching": true,
+                "ordering": true,
+                "info": true
+            });
+        });
+
+        var entryIdToDelete = null;
+        $(document).on('click', '.btn-delete', function () {
+            // Set the entry ID and show the modal
+            entryIdToDelete = $(this).data('entry-id');
+            $('#deleteConfirmationModal').modal('show');
+        });
+
+        $('#confirmDeleteBtn').click(function () {
+            if (entryIdToDelete) {
+                $.post(`/ChartOfAccounts/Delete/${entryIdToDelete}`, function (response) {
+                    alert(response.status ? 'Data deleted successfully.' : 'Error: Unable to delete.');
+                    if (response.status) location.reload();
+                }).fail(function () {
+                    alert('Error: An error occurred.');
+                });
+
+            }
+        });
+       
+        $('#deleteConfirmationModal').on('hidden.bs.modal', function () {
+            entryIdToDelete = null;
+        });
+
+    </script>
+}

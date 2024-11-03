@@ -1,0 +1,149 @@
+﻿@model IEnumerable<Core.Entities.JournalEntry>
+
+@{
+    ViewBag.Title = "Journal Entry Report";
+}
+
+<h2>Journal Entry Report</h2>
+
+<div class="filter-container mb-3">
+    <label>Date Range: </label>
+    <input type="text" id="startDate" placeholder="Start Date" />
+    <input type="text" id="endDate" placeholder="End Date" />
+    <button id="filterButton" class="btn btn-primary">Apply Filters</button>
+</div>
+
+<table id="reportTable" class="display" style="width:100%">
+    <thead>
+        <tr>
+            <th>Expand</th> 
+            <th>Entry ID</th>
+            <th>Entry Date</th>
+            <th>Description</th>
+            <th>Reference</th>
+        </tr>
+    </thead>
+</table>
+
+@section Styles {
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.7.1/css/buttons.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+}
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.7.1/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.7.1/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.7.1/js/buttons.print.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+    <script>
+        $(document).ready(function () {
+            flatpickr("#startDate", { dateFormat: "Y-m-d" });
+            flatpickr("#endDate", { dateFormat: "Y-m-d" });
+            
+            function formatNestedRow(transactions) {                
+                var html = `
+                <table style="width:100%; border-collapse:collapse; margin-top:10px; border: 1px solid #ccc;">
+                    <thead>
+                        <tr style="background-color:#f2f2f2; border-bottom: 2px solid #ccc;">
+                            <th style="padding: 8px; text-align: left; border: 1px solid #ccc;">Transaction ID</th>
+                            <th style="padding: 8px; text-align: left; border: 1px solid #ccc;">Account Name</th>
+                            <th style="padding: 8px; text-align: right; border: 1px solid #ccc;">Amount</th>
+                            <th style="padding: 8px; text-align: center; border: 1px solid #ccc;">Debit/Credit</th>
+                        </tr>
+                    </thead>
+                    <tbody>`;
+                                    
+                if (Array.isArray(transactions.data) && transactions.data.length > 0) {
+                    transactions.data.forEach(function (data) {
+                        html += `
+                <tr>
+                    <td style="padding: 8px; border: 1px solid #ccc;">${data.Id}</td>
+                    <td style="padding: 8px; border: 1px solid #ccc;">${data.AccountName}</td>
+                    <td style="padding: 8px; text-align: right; border: 1px solid #ccc;">${data.Amount.toFixed(2)}</td>
+                    <td style="padding: 8px; text-align: center; border: 1px solid #ccc;">${data.IsDebit ? 'Debit' : 'Credit'}</td>
+                </tr>`;
+                    });
+                } else {                   
+                    html += `<tr><td colspan="4" style="padding: 8px; text-align: center; color: #888; border: 1px solid #ccc;">No transactions available</td></tr>`;
+                }
+
+                html += `
+            </tbody>
+        </table>`;
+                return html;
+            }
+
+
+            var table = $('#reportTable').DataTable({
+                ajax: {
+                    url: '@Url.Action("GetReportData", "JournalEntry")',
+                    dataSrc: 'data',
+                    data: function (d) {
+                        d.startDate = $('#startDate').val();
+                        d.endDate = $('#endDate').val();
+                    }
+                },
+                columns: [
+                    {
+                        className: 'dt-control', 
+                        orderable: false,
+                        data: null,
+                        defaultContent: '<button class="btn btn-primary btn-sm expand-btn">+</button>',
+                    },
+                    { data: 'Id' },
+                    {
+                        data: 'EntryDate',
+                        render: function (data) {
+                            if (data) {
+                                const timestamp = parseInt(data.match(/\/Date\((\d+)\)\//)[1]);
+                                const date = new Date(timestamp);
+                                return date.toISOString().slice(0, 10);
+                            }
+                            return '';
+                        }
+                    },
+                    { data: 'Description' },
+                    { data: 'Reference' }
+                ],
+                dom: 'Bfrtip',
+                buttons: [
+                    { extend: 'copy', title: 'Journal Entry Report' },
+                    { extend: 'csv', title: 'Journal Entry Report' },
+                    { extend: 'excel', title: 'Journal Entry Report' },
+                    { extend: 'pdf', title: 'Journal Entry Report', orientation: 'portrait', pageSize: 'A4' },
+                    { extend: 'print', title: 'Journal Entry Report' }
+                ]
+            });
+            
+            $('#reportTable tbody').on('click', 'td.dt-control .expand-btn', async function () {
+                var tr = $(this).closest('tr');
+                var row = table.row(tr);
+
+                if (row.child.isShown()) {                    
+                    row.child.hide();
+                    tr.removeClass('shown');
+                } else {                   
+                    $.ajax({
+                        url: '@Url.Action("GetTransactionsByEntryId", "JournalEntry")', 
+                        data: { entryId: row.data().Id },
+                        success: function (data) {
+                            row.child(formatNestedRow(data)).show();
+                            tr.addClass('shown');
+                        }
+                    });
+                }
+            });
+
+            $('#filterButton').on('click', function () {
+                table.ajax.reload();
+            });
+        });
+    </script>
+}

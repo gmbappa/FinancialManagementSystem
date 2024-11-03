@@ -1,0 +1,6 @@
+C:\Users\USER\source\repos\FinancialManagementSystem\Core\bin\Debug\Core.dll
+C:\Users\USER\source\repos\FinancialManagementSystem\Core\bin\Debug\Core.pdb
+C:\Users\USER\source\repos\FinancialManagementSystem\Core\obj\Debug\Core.csproj.AssemblyReference.cache
+C:\Users\USER\source\repos\FinancialManagementSystem\Core\obj\Debug\Core.csproj.CoreCompileInputs.cache
+C:\Users\USER\source\repos\FinancialManagementSystem\Core\obj\Debug\Core.dll
+C:\Users\USER\source\repos\FinancialManagementSystem\Core\obj\Debug\Core.pdb
