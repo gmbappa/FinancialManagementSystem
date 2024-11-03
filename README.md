@@ -49,14 +49,14 @@ FinancialManagementSystem
 │
 ├── Presentation
     │── API
-	│   ├── Controllers
-	│   ├── Models
-	│── UI
-	│   ├── Controllers
-	│   ├── Views
-	    ├── Scripts
-		├── Validator
-		├── Mapper
+    │    ├── Controllers
+    │    ├── Models
+    │── UI
+         ├── Controllers
+         ├── Views
+         ├── Scripts
+         ├── Validator
+         ├── Mapper
 ```
 ### How Different Layers Interact
 
