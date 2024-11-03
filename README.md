@@ -10,7 +10,7 @@ The **Financial Management System** (FMS) is designed to provide users with comp
 - **Chart of Accounts:** Users can view, create, and manage accounts.
 - **Journal Entries:** Users can create, view, and report on journal entries.
 - **Responsive Design:** A user-friendly interface that works on various devices and screen sizes.
-- **Data Validation:** Strong validation mechanisms for user inputs to ensure data integrity.
+- **Data Validation:** Strong validation mechanisms for user inputs to ensure data integrity **FluentValidation**.
 
 ## Architecture Explanation
 
@@ -29,7 +29,7 @@ The Financial Management System employs **Onion Architecture** (or **Clean Archi
 - **Core Layer:** Contains business logic and domain entities. It is independent of other layers.
 - **Application Layer:** Contains application services and the implementation of CQRS.
 - **Infrastructure Layer:** Deals with data access, external services, and implementations of repositories.
-- **Presentation Layer:** Contains the UI components, including controllers and views (Razor views).
+- **Presentation Layer:** Contains the UI components/API, including controllers and views (Razor views).
 
 ### How Different Layers Interact
 
@@ -56,10 +56,12 @@ Before you begin, ensure you have met the following requirements:
    cd FinancialManagementSystem```
  
 1. **Install dependencies:**
+
 - Open the solution in Visual Studio and restore NuGet packages.   
 
 
 **Configure Database:**
+
 - Update the connection string in Web.config with your database credentials at API project.
 - Create database and table from db.sql that present in 'DocsFolder' at 'DB Folder'.
 - Running the Application Locally
@@ -73,7 +75,9 @@ Before you begin, ensure you have met the following requirements:
 The application should be accessible at http://localhost:60371/ by default for UI and http://localhost:55312/  for API.
 
 **API Documentation**
+
 List of API Endpoints
+
 Base URL : http://localhost:55312/api/v1/
 
 **Authentication**
@@ -96,6 +100,7 @@ Base URL : http://localhost:55312/api/v1/
 
 
 **Request and Response Formats**
+
 Login Request
 
 ```json
@@ -118,9 +123,11 @@ Copy code
 **Authentication Details**
 
 Explanation of JWT Token Implementation
+
 JWT is used to secure API endpoints. After a user logs in, they receive a token that must be included in the Authorization header of requests.
 
 How to Obtain and Use the Token
+
 Example:
 
 ```http
@@ -130,10 +137,12 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 **Pagination Implementation**
 
 Details on Pagination Handling
+
 - API Pagination: Use page and pageSize query parameters to fetch paged results.
 - UI Pagination: Pagination controls allow users to navigate through pages seamlessly in the interface.
 
 **Adjustable Parameters or Settings**
+
 - Default Page Size: 10 items per page.
 - Custom Page Size: Modify pageSize query parameter to retrieve different numbers of records.
 
@@ -145,6 +154,7 @@ Navigate to the sidebar to access reporting options for both the Chart of Accoun
 **Database Schema**
 
 Overview of the Database Design
+
 The system uses a normalized database schema to store financial data securely.
 
 **Tables and Relationships**
@@ -160,6 +170,8 @@ The system uses a normalized database schema to store financial data securely.
   JournalEntryLines
 
 Stores individual line items in each journal entry, including account name, debit/credit amount, and relationship to a journal entry.
+
 **Relationships Between Tables**
+
 - Users to JournalEntries: One-to-Many
 - JournalEntries to JournalEntryLines: One-to-Many
