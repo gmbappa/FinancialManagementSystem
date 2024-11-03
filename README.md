@@ -31,8 +31,8 @@ The Financial Management System employs **Onion Architecture** (or **Clean Archi
 - **Infrastructure Layer:** Deals with data access, external services, and implementations of repositories.
 - **Presentation Layer:** Contains the UI components/API, including controllers and views (Razor views).
 
+```markdown
 FinancialManagementSystem
-
 │
 ├── Core
 │   ├── Entities
@@ -57,7 +57,7 @@ FinancialManagementSystem
 	    ├── Scripts
 		├── Validator
 		├── Mapper
-
+```
 ### How Different Layers Interact
 
 1. The **Presentation Layer** communicates with the **Application Layer** to send commands or queries.
