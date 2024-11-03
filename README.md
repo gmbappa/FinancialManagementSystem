@@ -125,6 +125,11 @@ Base URL : http://localhost:55312/api/v1/
 - GET /JournalEntry/Details/{id} - Retrieves details of a specific journal entry.
 - GET /JournalEntry/GetReportData{queryString} - Retrieves details of report journal entry.
 
+## Login Credentials
+
+| User Name | Password |
+| -------- | -------- | 
+| admin  | 123  | 
 
 **Request and Response Formats**
 
