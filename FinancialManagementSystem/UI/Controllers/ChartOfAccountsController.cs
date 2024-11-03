@@ -59,9 +59,14 @@ namespace UI.Controllers
                     ModelState.AddModelError("", $"Failed to add Chart Of Accounts: {failure.ErrorMessage}");
                 }
                 return View(account);
-            }          
+            }
 
-            var json = JsonConvert.SerializeObject(itemToAdd);
+            ChartOfAccount acc = new ChartOfAccount();
+            acc.AccountName = itemToAdd.AccountName;
+            acc.AccountType = itemToAdd.AccountType.ToString();
+            acc.IsActive = itemToAdd.IsActive;           
+
+             var json = JsonConvert.SerializeObject(acc);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
 
             HttpResponseMessage response = await _httpClient.PostAsync("ChartOfAccounts/Add", content);
