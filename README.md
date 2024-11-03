@@ -66,6 +66,7 @@ Before you begin, ensure you have met the following requirements:
 - Launch the application:
 - Use Visual Studio to run the application or run dotnet run in the terminal.
 - API and UI Project Set As Start  from Properties/Multiple StartUp Project. 
+
 **Access the app:**
 
 
@@ -74,11 +75,12 @@ The application should be accessible at http://localhost:60371/ by default for U
 **API Documentation**
 List of API Endpoints
 Base URL : http://localhost:55312/api/v1/
+
 **Authentication**
 
 - POST /Authentication/Login - Logs in a user, returning a JWT token.
 
-** Chart of Accounts (COA)**
+**Chart of Accounts (COA)**
 
 - GET /ChartOfAccounts/GetActiveAccounts - Retrieves a list of COA entries.
 - POST /ChartOfAccounts/Add - Creates a new COA entry.
@@ -98,7 +100,7 @@ Login Request
 
 ```json
 Copy code
-POST /api/auth/login
+POST /Authentication/Login
 {
   "username": "admin",
   "password": "123"
@@ -114,6 +116,7 @@ Copy code
 ```
 
 **Authentication Details**
+
 Explanation of JWT Token Implementation
 JWT is used to secure API endpoints. After a user logs in, they receive a token that must be included in the Authorization header of requests.
 
@@ -125,6 +128,7 @@ Copy code
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 ```
 **Pagination Implementation**
+
 Details on Pagination Handling
 - API Pagination: Use page and pageSize query parameters to fetch paged results.
 - UI Pagination: Pagination controls allow users to navigate through pages seamlessly in the interface.
@@ -134,14 +138,17 @@ Details on Pagination Handling
 - Custom Page Size: Modify pageSize query parameter to retrieve different numbers of records.
 
 **Reporting Features**
+
 Instructions on Accessing and Using Reporting Functionalities
 Navigate to the sidebar to access reporting options for both the Chart of Accounts and Journal modules. Upon accessing a report, you’ll see aggregated financial data, which can also be exported.
 
 **Database Schema**
+
 Overview of the Database Design
 The system uses a normalized database schema to store financial data securely.
 
 **Tables and Relationships**
+
 - Users
    Stores user information and authentication details.
    
